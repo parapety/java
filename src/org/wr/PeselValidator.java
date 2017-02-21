@@ -1,5 +1,9 @@
 package org.wr;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 public class PeselValidator implements IValidator {
 
 	private String input;
@@ -13,16 +17,10 @@ public class PeselValidator implements IValidator {
 	}
 
 	public boolean isValid() {
-		if (!checkLengh()) {
-			return false;
+		if (checkLengh() && checkFormat() && checkCheckSum() && checkDate()) {
+			return true;
 		}
-		if (!checkFormat()) {
-			return false;
-		}
-		if (!checkCheckSum()) {
-			return false;
-		}
-		return true;
+		return false;
 	}
 
 	private boolean checkLengh() {
@@ -40,5 +38,17 @@ public class PeselValidator implements IValidator {
 			sum += Integer.parseInt(tmpInput[i]) * checkSumPattern[i];
 		}
 		return sum % 10 == Integer.parseInt(tmpInput[tmpInput.length - 1]);
+	}
+
+	private boolean checkDate() {
+		String inputDate = String.join("-", Helper.extractDateFromPesel(input));
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+		sdf.setLenient(false);
+		try {
+			Date date = sdf.parse(inputDate);
+		} catch (ParseException e) {
+			return false;
+		}
+		return true;
 	}
 }
