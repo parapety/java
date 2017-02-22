@@ -1,7 +1,10 @@
 package org.wr;
 
-public class Helper {
-	public static String[] extractDateFromPesel(String pesel) {
+import java.util.Calendar;
+import java.util.Date;
+
+public class PeselHelper {
+	public static Date extractDate(String pesel) {
 		Integer year = Integer.parseInt(pesel.substring(0, 2));
 		Integer month = Integer.parseInt(pesel.substring(2, 4));
 		Integer day = Integer.parseInt(pesel.substring(4, 6));
@@ -21,7 +24,9 @@ public class Helper {
 			year += 1800;
 			month -= 80;
 		}
-		return new String[] { year.toString(), (month < 10 ? "0" : "") + month.toString(),
-				(day < 10 ? "0" : "") + day.toString() };
+		Calendar cal = Calendar.getInstance();
+		cal.setLenient(false);
+		cal.set(year, month, day, 0, 0, 0);
+		return cal.getTime();
 	}
 }

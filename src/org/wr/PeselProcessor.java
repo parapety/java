@@ -1,5 +1,7 @@
 package org.wr;
 
+import java.util.Date;
+
 public class PeselProcessor {
 
 	private String input;
@@ -8,8 +10,8 @@ public class PeselProcessor {
 		this.input = input;
 	}
 
-	public String readBirthDate() {
-		return String.join("-", Helper.extractDateFromPesel(input));
+	public Date readBirthDate() {
+		return PeselHelper.extractDate(input);
 	}
 
 	public String readGender() {

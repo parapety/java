@@ -17,7 +17,7 @@ public class App {
 			e.printStackTrace();
 		}
 		String pesel = new String(input).trim();
-		PeselValidator validator = new PeselValidator(pesel);
+		IValidator validator = new PeselValidator(pesel);
 		if (validator.isValid()) {
 			PeselProcessor processor = new PeselProcessor(pesel);
 			System.out.println("PESEL Poprawny");

@@ -41,12 +41,9 @@ public class PeselValidator implements IValidator {
 	}
 
 	private boolean checkDate() {
-		String inputDate = String.join("-", Helper.extractDateFromPesel(input));
-		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-		sdf.setLenient(false);
 		try {
-			Date date = sdf.parse(inputDate);
-		} catch (ParseException e) {
+			PeselHelper.extractDate(input);
+		} catch (RuntimeException e) {
 			return false;
 		}
 		return true;
