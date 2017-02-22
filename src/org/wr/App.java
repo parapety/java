@@ -17,12 +17,12 @@ public class App {
 			e.printStackTrace();
 		}
 		String pesel = new String(input).trim();
-		IValidator validator = new PeselValidator(pesel);
-		if (validator.isValid()) {
-			PeselProcessor processor = new PeselProcessor(pesel);
+		IValidator validator = new PeselValidator();
+		if (validator.isValid(pesel)) {
+			PeselProcessor processor = new PeselProcessor();
 			System.out.println("PESEL Poprawny");
-			System.out.println("Data urodzenia: " + processor.readBirthDate());
-			System.out.println("Płeć: " + processor.readGender());
+			System.out.println("Data urodzenia: " + processor.readBirthDate(pesel));
+			System.out.println("Płeć: " + processor.readGender(pesel));
 		} else {
 			System.out.println("Błędny PESEL");
 		}

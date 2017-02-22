@@ -26,7 +26,7 @@ public class PeselHelper {
 		}
 		Calendar cal = Calendar.getInstance();
 		cal.setLenient(false);
-		cal.set(year, month, day, 0, 0, 0);
+		cal.set(year, month - 1, day, 0, 0, 0);
 		return cal.getTime();
 	}
 }

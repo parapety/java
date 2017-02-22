@@ -6,32 +6,26 @@ import java.util.Date;
 
 public class PeselValidator implements IValidator {
 
-	private String input;
-
 	final String peselPattern = "^[0-9]{11}$";
 
 	final int[] checkSumPattern = { 9, 7, 3, 1, 9, 7, 3, 1, 9, 7 };
 
-	public PeselValidator(String input) {
-		this.input = input;
-	}
-
-	public boolean isValid() {
-		if (checkLengh() && checkFormat() && checkCheckSum() && checkDate()) {
+	public boolean isValid(String input) {
+		if (checkLengh(input) && checkFormat(input) && checkCheckSum(input) && checkDate(input)) {
 			return true;
 		}
 		return false;
 	}
 
-	private boolean checkLengh() {
+	private boolean checkLengh(String input) {
 		return input.length() == 11;
 	}
 
-	private boolean checkFormat() {
+	private boolean checkFormat(String input) {
 		return input.matches(peselPattern);
 	}
 
-	private boolean checkCheckSum() {
+	private boolean checkCheckSum(String input) {
 		String[] tmpInput = input.split("");
 		int sum = 0;
 		for (int i = 0; i < checkSumPattern.length; i++) {
@@ -40,7 +34,7 @@ public class PeselValidator implements IValidator {
 		return sum % 10 == Integer.parseInt(tmpInput[tmpInput.length - 1]);
 	}
 
-	private boolean checkDate() {
+	private boolean checkDate(String input) {
 		try {
 			PeselHelper.extractDate(input);
 		} catch (RuntimeException e) {
