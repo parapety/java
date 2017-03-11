@@ -5,9 +5,15 @@ import java.util.Date;
 
 public class PeselProcessor {
 
+	private IPeselHelper peselHelper = null;
+
+	public PeselProcessor(IPeselHelper peselHelper) {
+		this.peselHelper = peselHelper;
+	}
+
 	public String readBirthDate(String input) {
 		SimpleDateFormat sm = new SimpleDateFormat("yyyy-MM-dd");
-		return sm.format(PeselHelper.extractDate(input));
+		return sm.format(peselHelper.extractDate(input));
 	}
 
 	public String readGender(String input) {

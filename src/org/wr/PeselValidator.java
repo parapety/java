@@ -10,6 +10,12 @@ public class PeselValidator implements IValidator {
 
 	final int[] checkSumPattern = { 9, 7, 3, 1, 9, 7, 3, 1, 9, 7 };
 
+	private IPeselHelper peselHelper = null;
+
+	public PeselValidator(IPeselHelper peselHelper) {
+		this.peselHelper = peselHelper;
+	}
+
 	public boolean isValid(String input) {
 		if (checkLengh(input) && checkFormat(input) && checkCheckSum(input) && checkDate(input)) {
 			return true;
@@ -36,7 +42,7 @@ public class PeselValidator implements IValidator {
 
 	private boolean checkDate(String input) {
 		try {
-			PeselHelper.extractDate(input);
+			peselHelper.extractDate(input);
 		} catch (RuntimeException e) {
 			return false;
 		}

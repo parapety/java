@@ -4,14 +4,25 @@ import static org.junit.Assert.*;
 
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 
+import static org.mockito.Mockito.*;
+
+import java.util.Calendar;
+import java.util.Date;
+
+import org.mockito.junit.MockitoJUnitRunner;
+import org.mockito.Mock;
+
+@RunWith(MockitoJUnitRunner.class)
 public class PeselValidatorTest {
 
 	private PeselValidator validator;
+	@Mock private IPeselHelper peselHelper;
 
 	@Before
 	public void setUp() throws Exception {
-		validator = new PeselValidator();
+		validator = new PeselValidator(peselHelper);
 	}
 
 	@Test
@@ -49,6 +60,7 @@ public class PeselValidatorTest {
 		// given
 		String pesel = "44544444447";
 		// when
+		when(peselHelper.extractDate("44544444447")).thenThrow(new RuntimeException());
 		boolean valid = validator.isValid(pesel);
 		// then
 		assertFalse(valid);
@@ -59,6 +71,7 @@ public class PeselValidatorTest {
 		// given
 		String pesel = "44051401458";
 		// when
+		when(peselHelper.extractDate("44051401458")).thenReturn(new Date());
 		boolean valid = validator.isValid(pesel);
 		// then
 		assertTrue(valid);

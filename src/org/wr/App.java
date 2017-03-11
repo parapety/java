@@ -17,9 +17,9 @@ public class App {
 			e.printStackTrace();
 		}
 		String pesel = new String(input).trim();
-		IValidator validator = new PeselValidator();
+		IValidator validator = new PeselValidator(PeselHelper.getInstance());
 		if (validator.isValid(pesel)) {
-			PeselProcessor processor = new PeselProcessor();
+			PeselProcessor processor = new PeselProcessor(PeselHelper.getInstance());
 			System.out.println("PESEL Poprawny");
 			System.out.println("Data urodzenia: " + processor.readBirthDate(pesel));
 			System.out.println("Płeć: " + processor.readGender(pesel));

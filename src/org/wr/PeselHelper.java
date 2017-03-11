@@ -3,8 +3,21 @@ package org.wr;
 import java.util.Calendar;
 import java.util.Date;
 
-public class PeselHelper {
-	public static Date extractDate(String pesel) {
+public class PeselHelper implements IPeselHelper {
+
+	private static PeselHelper instance = null;
+
+	private PeselHelper() {
+	}
+
+	public static PeselHelper getInstance() {
+		if (instance == null) {
+			instance = new PeselHelper();
+		}
+		return instance;
+	}
+
+	public Date extractDate(String pesel) {
 		Integer year = Integer.parseInt(pesel.substring(0, 2));
 		Integer month = Integer.parseInt(pesel.substring(2, 4));
 		Integer day = Integer.parseInt(pesel.substring(4, 6));

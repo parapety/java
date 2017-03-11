@@ -2,75 +2,52 @@ package org.wr;
 
 import static org.junit.Assert.*;
 
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.Map;
-import java.util.Set;
+import java.util.Calendar;
 
+import org.junit.Before;
 import org.junit.Test;
-import org.junit.experimental.theories.DataPoints;
-import org.junit.experimental.theories.FromDataPoints;
-import org.junit.experimental.theories.Theories;
-import org.junit.experimental.theories.Theory;
 import org.junit.runner.RunWith;
+import static org.mockito.Mockito.*;
+import org.mockito.Mock;
+import org.mockito.junit.MockitoJUnitRunner;
 
-@RunWith(Theories.class)
+@RunWith(MockitoJUnitRunner.class)
 public class PeselProcessorTest {
 
-	@DataPoints("AAA")
-	public static Set<Map.Entry<String, String>> dataProviderSet;
-	static{
-		
-		Map<String,String> dataProvider=new HashMap<>();
-		dataProvider.put("44051401458", "1944-05-14");
-		dataProvider.put("85832212346", "1885-03-22");
-		
-		dataProvider.put("85432212344", "2185-03-22");
-		dataProvider.put("85232212348", "2085-03-22");		
-		dataProviderSet=dataProvider.entrySet();
+	@Mock
+	private IPeselHelper peselHelper;
+	private PeselProcessor processor;
+
+	
+	@Before public void setUp() {
+		processor = new PeselProcessor(peselHelper); 
 	}
 
-	@DataPoints("BBB")
-	public static Set<Map.Entry<String, String>> dataProviderSetb;
-	static{
-		
-		Map<String,String> dataProvider=new HashMap<>();
-		dataProvider.put("44051401458", "1944-05-14");
-		dataProvider.put("85832212346", "1885-03-22");
-		dataProvider.put("85632212340", "6666-03-22");
-		dataProvider.put("85432212344", "2185-03-22");
-		dataProvider.put("85232212348", "2085-03-22");		
-		dataProviderSetb=dataProvider.entrySet();
-	}
-	
-	
-	private PeselProcessor processor = new PeselProcessor();
-	
-	@Theory
-	public void shouldReturnExpectedDate(@FromDataPoints("AAA")Map.Entry<String, String> entry) {
-		
-			// when
-			String result = processor.readBirthDate((String) entry.getKey());
-			// then
-			assertEquals(result, entry.getValue());
-	
+	@Test
+	public void shouldReturnExpectedDateInExpectedFormat() {
+		String pesel = "44051401458";
+		// when
+		when(peselHelper.extractDate("44051401458"))
+				.thenReturn(new Calendar.Builder().setDate(1944, 4, 14).build().getTime());
+		String result = processor.readBirthDate(pesel);
+		// then
+		assertEquals(result, "1944-05-14");
 	}
 
 	@Test
 	public void shouldReturnMen() {
 		// given
-		PeselProcessor processor = new PeselProcessor();
+		PeselProcessor processor = new PeselProcessor(peselHelper);
 		// when
 		String gender = processor.readGender("44051401458");
 		// then
 		assertEquals("Mężczyzna", gender);
 	}
-	
+
 	@Test
 	public void shouldReturnWomen() {
 		// given
-		PeselProcessor processor = new PeselProcessor();
+		PeselProcessor processor = new PeselProcessor(peselHelper);
 		// when
 		String gender = processor.readGender("44051401441");
 		// then
